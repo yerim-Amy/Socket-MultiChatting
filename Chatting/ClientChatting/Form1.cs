@@ -90,8 +90,6 @@ namespace ClientChatting
                                 
             socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
 
-        }
-       
-      
+        }      
     }
 }

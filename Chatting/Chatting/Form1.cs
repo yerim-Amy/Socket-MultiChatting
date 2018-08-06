@@ -22,8 +22,6 @@ namespace Chatting
         private static byte[] _buffer = new byte[1024];
         private static List<Socket> _clientSockets = new List<Socket>();
 
-        //private static Socket _clientSocket;
-
         public Form1()
         {
             InitializeComponent();
@@ -34,11 +32,9 @@ namespace Chatting
             try
             {
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                //_clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 //폼 로드되면 내 IP주소 가져오기
                 tb_myIP.Text = getMyIPAddress();
-                //tb_otherIP.Text = getMyIPAddress();
                 tb_myName.Text = getMyIPAddress();
             }
             catch(Exception ex)
