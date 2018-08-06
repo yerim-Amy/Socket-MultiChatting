@@ -91,7 +91,7 @@ namespace Chatting
             byte[] dataBuf = new byte[received];
             Array.Copy(_buffer, dataBuf, received);
 
-            string text = Encoding.ASCII.GetString(dataBuf);
+            string text = Encoding.UTF8.GetString(dataBuf);
             string searchText = ",";
             string clientName = text.Substring(0, text.IndexOf(searchText));
             string clientMessage = text.Substring(text.IndexOf(searchText) + 1);
@@ -108,7 +108,7 @@ namespace Chatting
                 MessageBox.Show("텍스트를 입력하세요.");
             }
 
-            byte[] buffer = Encoding.ASCII.GetBytes(tb_send.Text);
+            byte[] buffer = Encoding.UTF8.GetBytes(tb_send.Text);
 
             for (int i = _clientSockets.Count - 1; i >= 0; i--) //Connect된 Client에게 데이터 전송
             {

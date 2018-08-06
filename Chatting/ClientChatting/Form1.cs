@@ -14,7 +14,7 @@ namespace ClientChatting
 {
     public partial class Form1 : Form
     {
-        private static Socket _clientSocket;
+        private static Socket clientSocket;
         IPEndPoint ep_other;
         private static byte[] _buffer;
 
@@ -25,7 +25,7 @@ namespace ClientChatting
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _buffer = new byte[1024];
             tb_otherIP.Text = getMyIPAddress();
             tb_myName.Text = getMyIPAddress();
@@ -48,15 +48,15 @@ namespace ClientChatting
                 MessageBox.Show("텍스트를 입력하세요.");
             }
 
-            byte[] buffer = Encoding.ASCII.GetBytes(tb_myName.Text+","+tb_send.Text);
-            _clientSocket.Send(buffer);
-            lb_chat.Items.Add("Received : " + tb_send.Text);
+            byte[] buffer = Encoding.UTF8.GetBytes(tb_myName.Text + "," + tb_send.Text);
+            clientSocket.Send(buffer);
+            lb_chat.Items.Add("Client("+tb_myName.Text+") : " + tb_send.Text);
             tb_send.Text = "";
         }
 
         private void btn_connect_Click(object sender, EventArgs e)
         {
-            if (_clientSocket.Connected)
+            if (clientSocket.Connected)
             {
                 MessageBox.Show("이미 연결되어 있습니다");
                 return;
@@ -65,8 +65,8 @@ namespace ClientChatting
             try
             {
                 ep_other = new IPEndPoint(IPAddress.Parse(tb_otherIP.Text), Convert.ToInt32(tb_otherPort.Text));
-                _clientSocket.Connect(ep_other);
-                _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+                clientSocket.Connect(ep_other);
+                clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), clientSocket);
             }
             catch (Exception)
             {
@@ -84,7 +84,7 @@ namespace ClientChatting
             byte[] dataBuf = new byte[received];
             Array.Copy(_buffer, dataBuf, received);
 
-            string text = Encoding.ASCII.GetString(dataBuf);
+            string text = Encoding.UTF8.GetString(dataBuf);
 
             lb_chat.Items.Add("Server : " + text);
                                 
